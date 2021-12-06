@@ -9,6 +9,10 @@ function FetchComp()
     const [postTitle,setPostTitle] = useState()
     const [postBody,setPostBody] = useState()
     const [postUserId,setPostUserId] = useState()
+    const [putId,setPutId] = useState()
+    const [putTitle,setPutTitle] = useState()
+    const [putBody,setPutBody] = useState()
+    const [putUserId,setPutUserId] = useState()
     const [patchId,setPatchId] = useState()
     const [patchTitle,setPatchTitle] = useState()
     const [patchBody,setPatchBody] = useState()
@@ -77,6 +81,49 @@ function FetchComp()
             setData([resData])
         })
     }
+
+    //Put Request to Update Existing Data
+    function onPutIdChange(event)
+    {
+        setPutId(event.target.value)
+    }
+    function onPutTitleChange(event)
+    {
+        setPutTitle(event.target.value)
+    }
+    function onPutBodyChange(event)
+    {
+        setPutBody(event.target.value)
+    }
+    function onPutUserIdChange(event)
+    {
+        setPutUserId(event.target.value)
+    }
+    function putData()
+    {
+        let urlOfPostToBeUpdated = `${serverAPIUrl}/${putId}`
+        
+        fetch(
+            urlOfPostToBeUpdated,
+            {
+                method : 'PUT',
+                body : JSON.stringify({
+                    id : `${putId}`,
+                    title : `${putTitle}`,
+                    body : `${putBody}`,
+                    userId : `${putUserId}`
+                }),
+                headers: {
+                  'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+        .then(res=>res.json())
+        .then(resData=>{
+            setData([resData])
+        })
+    }
+
 
     //Patch Request to Update Existing Specific Data
     function onPatchIdChange(event)
@@ -182,6 +229,13 @@ function FetchComp()
             <input type="text" value={postBody} onChange={onPostBodyChange} id="postBody" placeholder="Enter Body"></input>
             <input type="number" value={postUserId} onChange={onPostUserIdChange} id="postUserId" placeholder="Enter userId number"></input>
             <button id="postDataBtn" onClick={postData}>Post data</button>
+            <hr/>
+            <h2>Put Request (Updating Data)</h2>
+            <input type="number" value={putId} onChange={onPutIdChange} id="idToUpdate" placeholder="Enter post id to update"></input>
+            <input type="text" value={putTitle} onChange={onPutTitleChange} id="putTitle" placeholder="Enter Title"></input>
+            <input type="text" value={putBody} onChange={onPutBodyChange} id="putBody" placeholder="Enter Body"></input>
+            <input type="number" value={putUserId} onChange={onPutUserIdChange} id="putUserId" placeholder="Enter userId number"></input>
+            <button id="putDataBtn" onClick={putData}>Put data</button>
             <hr/>
             <h2>Patch Request (Updating Specific Data)</h2>
             <input type="number" value={patchId} onChange={onPatchIdChange} id="patchId" placeholder="Enter post id to update"></input>
